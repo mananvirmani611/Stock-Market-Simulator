@@ -26,27 +26,27 @@ Users can register, receive an initial virtual money balance, and use it to buy 
 3. Technical Details <br />
       3.1 Database Structure <br />
           3.1.1 User Data Schema <br />
-                - _id: ObjectId <br />
-                - Email: String <br />
-                - Balance: Number <br />
-                - StocksInHand: Array[StockRecord] <br />
+                &nbsp;- _id: ObjectId <br />
+                &nbsp;- Email: String <br />
+                &nbsp;- Balance: Number <br />
+                &nbsp;- StocksInHand: Array[StockRecord] <br />
           3.1.2 StockRecord Schema <br />
-                - _id: ObjectId <br />
-                - StockName: String <br />
-                - PurchasedAt: Date <br />
-                - Quantity: Number <br />
-                - PurchaseQuantity: Number <br />
-                - StockPurchasePrice: Number <br />
-                - TotalPurchaseValue: Number <br />
+                &nbsp;- _id: ObjectId <br />
+                &nbsp;- StockName: String <br />
+                &nbsp;- PurchasedAt: Date <br />
+                &nbsp;- Quantity: Number <br />
+                &nbsp;- PurchaseQuantity: Number <br />
+                &nbsp;- StockPurchasePrice: Number <br />
+                &nbsp;- TotalPurchaseValue: Number <br />
       3.2 API Routes <br />
           3.2.1 UserRoutes <br />
-                - GET /current-balance: Retrieves the current balance of the authenticated user <br />
-                - PATCH /stock-record: Updates the stock record of the user <br />
-                - GET /data: Retrieves the entire user data <br />
-                - PATCH /sell: Updates the stock record after selling <br />
+                &nbsp;- GET /current-balance: Retrieves the current balance of the authenticated user <br />
+                &nbsp;- PATCH /stock-record: Updates the stock record of the user <br />
+                &nbsp;- GET /data: Retrieves the entire user data <br />
+                &nbsp;- PATCH /sell: Updates the stock record after selling <br />
           3.2.2 authRoutes <br />
-                - GET /verifyToken: Verifies the JWT token and returns the corresponding email <br />
-                - POST /authenticate: Creates a new user in the database and adds 5000 initial credits to the user account balance <br />
+                &nbsp;- GET /verifyToken: Verifies the JWT token and returns the corresponding email <br />
+                &nbsp;- POST /authenticate: Creates a new user in the database and adds 5000 initial credits to the user account balance <br />
    
 4. Installation: <br />
    4.1 Scraping Real-Time Stock Data
