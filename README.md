@@ -38,6 +38,7 @@ Users can register, receive an initial virtual money balance, and use it to buy 
                 &emsp;&emsp;- PurchaseQuantity: Number <br />
                 &emsp;&emsp;- StockPurchasePrice: Number <br />
                 &emsp;&emsp;- TotalPurchaseValue: Number <br />
+                <br />
       3.2 API Routes <br />
           &emsp;3.2.1 UserRoutes <br />
                 &emsp;&emsp;- GET /current-balance: Retrieves the current balance of the authenticated user <br />
@@ -47,7 +48,10 @@ Users can register, receive an initial virtual money balance, and use it to buy 
           &emsp;3.2.2 authRoutes <br />
                 &emsp;&emsp;- GET /verifyToken: Verifies the JWT token and returns the corresponding email <br />
                 &emsp;&emsp;- POST /authenticate: Creates a new user in the database and adds 5000 initial credits to the user account balance <br />
-   
+                <br />
+      3.3 Scraping the Real Time Stock Data <br />
+         &emsp;Our stock market simulator app uses BeautifulSoup to scrape real-time data from Google Finance. The scraped data is stored in a MySQL database and accessed via an API to supply the Node.js backend. This ensures users receive the latest stock prices and market information.
+   <br />
 4. Installation: <br />
    4.1 Scraping Real-Time Stock Data
    - Make sure you have MySQL installed on your device.
