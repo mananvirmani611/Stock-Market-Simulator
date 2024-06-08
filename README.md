@@ -77,3 +77,10 @@ Users can register, receive an initial virtual money balance, and use it to buy 
          npm install
    - Start the frontend application:
          npm run start
+
+
+
+#################################################################################3
+
+
+FLOW DIAGRAM Link: https://tinyurl.com/stock-simulator-flow-diagram
