@@ -123,7 +123,7 @@ const Profile = function () {
         updateCards();
     }, [tabledata])
   return (
-    <div style={{ padding: "1% 2%" }}>
+    <div style={{ padding: "1% 2%", fontFamily:"Poppins" }}>
       <Navbar leftText={"Personal Dashboard"} showBalance={false} iconType='Home'/>
       <div style={{ padding: "2%", backgroundColor: "#F5efea", margin: "1% 0", borderRadius: "10px", boxShadow: "3px 3px lightgray", }}>
         <Grid container className="main-grid" variant="circular">

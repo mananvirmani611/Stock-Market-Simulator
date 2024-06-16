@@ -102,7 +102,7 @@ const Dashboard = function(){
             setStockData(res.data.data);
         })
     }, [pageNo])
-    return <div>{email && balance && <div style={{'padding' : '1% 2%'}}>
+    return <div style={{fontFamily:"Poppins"}}>{email && balance && <div style={{'padding' : '1% 2%'}}>
         {email && <Navbar email={email} leftText="Dashboard" rightText={`Credits Left: `} showBalance={true} iconType='Profile'/>}
         {stockData &&
             <div style={{ 'padding': '2%', 'backgroundColor' : '#ebe0d6', 'margin' : '1% 0', 'borderRadius' : '10px', 'boxShadow' : '3px 3px lightgray'}}>
