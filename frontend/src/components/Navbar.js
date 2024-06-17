@@ -8,11 +8,14 @@ import { useNavigate } from 'react-router-dom';
 import { Get } from '../services/ThirdPartyUtilityService';
 import constants from '../constants';
 import Home from '@mui/icons-material/Home';
+import { useDispatch } from 'react-redux';
+import { updateBalance, updateEmail } from '../slices/emailSlice';
 
 
 
 const Navbar = function ({email, leftText, rightText, showBalance, iconType}) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [balance, setBalance] = useState("");
   const style = `
         .menu-item{
@@ -68,6 +71,8 @@ const Navbar = function ({email, leftText, rightText, showBalance, iconType}) {
   const logOut = function(){
       googleLogout();
       localStorage.clear();
+      dispatch(updateEmail(""));
+      dispatch(updateBalance(-1));
       navigate("/login");
   }
 

@@ -31,6 +31,33 @@ export const fetchEmail = createAsyncThunk(
         }
     }
 )
+export const fetchBalance = createAsyncThunk(
+    'email/fetchBalance',
+    async (_, {getState ,rejectWithValue}) => {
+        try{
+            if(localStorage.getItem('login-token')){
+                const state = getState();
+                const currToken = localStorage.getItem('login-token');
+                const response = await Get(constants.BASE_API_URL + constants.APIS.CURRENT_BALANCE + `?email=${state.email.email}`, 
+                {
+                    Authorization: `Bearer ${currToken}`,
+                    Accept: 'application/json'
+                })
+    
+                const balance = response.data.balance;
+                return balance;
+            }
+            else{
+                rejectWithValue("Login token not found");
+            }
+        }
+        catch(err){
+            localStorage.clear();
+            rejectWithValue(err.message);
+        }
+    }
+)
+
 const emailSlice = createSlice({
     name : 'email',
     initialState : initialState,
@@ -49,6 +76,12 @@ const emailSlice = createSlice({
         })
         .addCase(fetchEmail.rejected, (state, action) => {
             console.log("error in fetching email api " + action.payload);
+        })
+        .addCase(fetchBalance.fulfilled, (state, action) => {
+            state.balance = action.payload;
+        })
+        .addCase(fetchBalance.rejected, (state, action) => {
+            console.log("error in fetching balance api " + action.payload);
         })
     }
 })

@@ -60,7 +60,7 @@ function Authentication() {
             }
         }
 
-        if(userEmail === ""){
+        if(!userEmail){
             console.log("user email is null");
             if(localStorage.getItem('login-token')){
                 verifyTokenAndUpdateEmail();
