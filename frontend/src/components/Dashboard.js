@@ -8,7 +8,7 @@ import Button from '@mui/joy/Button';
 import Pagination from '@mui/material/Pagination';
 import Modal from "./Modal";
 import {useSelector, useDispatch} from 'react-redux'
-import { fetchBalance, fetchEmail } from "../slices/emailSlice";
+import { fetchBalance, fetchEmail, updateBalance } from "../slices/emailSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 toast.configure();
@@ -58,6 +58,7 @@ const Dashboard = function(){
         .then((res) => {
           console.log(res);
           toast.success("Purchase Successful", {autoClose : 500});
+          dispatch(updateBalance(userBalance - totalPrice));
           setModalOpen(false);
         })
         .catch((err) => {

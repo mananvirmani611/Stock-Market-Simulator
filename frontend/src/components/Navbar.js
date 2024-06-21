@@ -5,18 +5,16 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Tooltip from '@mui/material/Tooltip';
 import { useNavigate } from 'react-router-dom';
-import { Get } from '../services/ThirdPartyUtilityService';
-import constants from '../constants';
 import Home from '@mui/icons-material/Home';
-import { useDispatch } from 'react-redux';
-import { updateBalance, updateEmail } from '../slices/emailSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchBalance, updateBalance, updateEmail } from '../slices/emailSlice';
 
 
 
-const Navbar = function ({email, leftText, rightText, showBalance, iconType}) {
+const Navbar = function ({leftText, rightText, showBalance, iconType}) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [balance, setBalance] = useState("");
+  const userBalance = useSelector((state) => state.email.balance);
   const style = `
         .menu-item{
             background-color:#ebe0d6;
@@ -58,13 +56,9 @@ const Navbar = function ({email, leftText, rightText, showBalance, iconType}) {
   }
   useEffect(() => {
       if(showBalance){
-        Get(constants.BASE_API_URL + constants.APIS.CURRENT_BALANCE + `?email=${email}`)
-        .then((res) => {
-          setBalance((res.data.balance).toFixed(2));
-        }) 
-        .catch((err) => {
-          console.log(err);
-        })
+          if(userBalance === -1){
+              dispatch(fetchBalance());
+          }       
       }
   })
 
@@ -86,7 +80,7 @@ const Navbar = function ({email, leftText, rightText, showBalance, iconType}) {
         <div className='left-div'>{leftText}</div>
       </Grid>
       <Grid item xs={2} >
-        <div className='right-div'>{rightText && rightText + balance + '₹'}</div>
+        <div className='right-div'>{rightText && rightText + userBalance.toFixed(2) + '₹'}</div>
       </Grid>
       <Grid item xs={1}>
         <button onClick={() => handleNavigation(iconType)} style={styleButton} onMouseOver={() => setStyleButton({ ...styleButton, 'cursor': 'pointer' })}>
