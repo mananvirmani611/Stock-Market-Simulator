@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { Get, Patch } from "../services/ThirdPartyUtilityService";
 import constants from "../constants";
 import Modal from "./Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { updateBalance } from "../slices/emailSlice";
 
 const style = `
     .display-card{
@@ -27,8 +29,11 @@ const colors = [
 ]
 const Profile = function () {
     const navigate = useNavigate();
+    const userEmail = useSelector((state) => state.email.email);
+    const userBalance = useSelector((state) => state.email.balance);
+    const dispatch = useDispatch();
+
     const [tabledata, setTableData] = useState(null);
-    const [email, setEmail] = useState(null);
     const [values, setValues] = useState([Number(null), Number(null), Number(null)]);
     const [stockPricesMap, setStockPricesMap] = useState(new Map([]));
     const [modalOpen, setModalOpen] = useState(false);
@@ -49,13 +54,12 @@ const Profile = function () {
 
         Patch(constants.BASE_API_URL + constants.APIS.SELL_STOCK, reqBody, reqHeaders)
         .then((res) => {
+            dispatch(updateBalance(userBalance + (howManyToSell * stockPricesMap.get(selectedStockData.stock))));
             setModalOpen(false);
-
         })
         .catch((err) => {
             ///send error toast
         })
-
     }
 
     const openModal = function(stockName, stockPrice, qty, recordID){
@@ -67,26 +71,21 @@ const Profile = function () {
         if(!localStorage.getItem('login-token')){
             navigate("/login");
         }
-        const response1 = await Get(constants.BASE_API_URL + constants.APIS.VERIFY_TOKEN, {
-            Authorization: `Bearer ${localStorage.getItem('login-token')}`,
-            Accept: 'application/json'
-        })
-        setEmail(response1.data.username);
 
-        const userDataResponse = await Get(constants.BASE_API_URL + constants.APIS.USER_DATA + `?email=${response1.data.username}`, {
+        const userDataResponse = await Get(constants.BASE_API_URL + constants.APIS.USER_DATA + `?email=${userEmail}`, {
             Authorization: `Bearer ${localStorage.getItem('login-token')}`,
             Accept: 'application/json'
         })
+        
         setTableData(userDataResponse.data);
     }
 
     async function updateCards(){
-        console.log("update cards called");
-        const response1 = await Get(constants.BASE_API_URL + constants.APIS.VERIFY_TOKEN, {
-            Authorization: `Bearer ${localStorage.getItem('login-token')}`,
-            Accept: 'application/json'
-        })
-        const userDataResponse = await Get(constants.BASE_API_URL + constants.APIS.USER_DATA + `?email=${response1.data.username}`, {
+        if(!localStorage.getItem('login-token')){
+            navigate("/login");
+        }
+
+        const userDataResponse = await Get(constants.BASE_API_URL + constants.APIS.USER_DATA + `?email=${userEmail}`, {
             Authorization: `Bearer ${localStorage.getItem('login-token')}`,
             Accept: 'application/json'
         })
@@ -99,10 +98,9 @@ const Profile = function () {
             stockPricesMaptemp.set(stockName, stockPriceData.data.data.price);
         }
         setStockPricesMap(stockPricesMaptemp);
-        const balanceResponse = await Get(constants.BASE_API_URL + constants.APIS.CURRENT_BALANCE + `?email=${response1.data.username}`)
-       
+        
         const newvalues = [];
-        newvalues[0] = balanceResponse.data.balance;
+        newvalues[0] = userBalance;
         newvalues[1] = 0;
         newvalues[2] = 0;
         userStockData.forEach((item) => {
@@ -181,7 +179,7 @@ const Profile = function () {
                     </tbody>
                 </Table>
       </div>
-      {modalOpen && <Modal type={"Sell"} setModalOpen={setModalOpen} stockData={selectedStockData} balance={values[0]} email={email} buyStockFunction={sellStock} maxAllowedQuantity={maxAllowedQuantity}/>}
+      {modalOpen && <Modal type={"Sell"} setModalOpen={setModalOpen} stockData={selectedStockData} balance={values[0]} email={userEmail} buyStockFunction={sellStock} maxAllowedQuantity={maxAllowedQuantity}/>}
       <style>{style}</style>
     </div>
   );
